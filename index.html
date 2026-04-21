@@ -3,50 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Business Suite | VIBRAS POSITIVAS HM</title>
+    <title>JoyeriApp Business | VIBRAS POSITIVAS HM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .bg-vibras { background-color: #f3f4f6; }
+        body { background-color: #f3f4f6; }
     </style>
 </head>
-<body class="bg-vibras pb-20">
+<body class="pb-24">
 
-    <header class="bg-indigo-900 text-white p-6 shadow-lg text-center">
+    <header class="bg-indigo-900 text-white p-6 shadow-xl text-center">
         <h1 class="text-2xl font-bold">💎 JoyeriApp Business</h1>
-        <p class="text-xs opacity-80 uppercase tracking-widest">Gestión Integral de Emprendimiento</p>
+        <p class="text-xs opacity-80 uppercase tracking-widest">Gestión Integral: Joyería, Créditos y Capital</p>
     </header>
 
-    <nav class="flex overflow-x-auto bg-white border-b sticky top-0 z-10">
-        <button onclick="showTab('clientes')" class="flex-1 py-3 px-4 text-sm font-bold border-b-2 border-indigo-600">CLIENTES</button>
-        <button onclick="showTab('prestamos')" class="flex-1 py-3 px-4 text-sm font-bold">PRÉSTAMOS</button>
-        <button onclick="showTab('caja')" class="flex-1 py-3 px-4 text-sm font-bold">MOV. QUINCENAL</button>
-        <button onclick="showTab('simulador')" class="flex-1 py-3 px-4 text-sm font-bold">SIMULADOR</button>
+    <nav class="flex overflow-x-auto bg-white border-b sticky top-0 z-10 shadow-sm">
+        <button onclick="showTab('clientes')" class="tab-btn flex-1 py-4 px-2 text-xs font-bold border-b-2 border-indigo-600 text-indigo-600">CLIENTES</button>
+        <button onclick="showTab('prestamos')" class="tab-btn flex-1 py-4 px-2 text-xs font-bold text-gray-500">PRÉSTAMOS</button>
+        <button onclick="showTab('caja')" class="tab-btn flex-1 py-4 px-2 text-xs font-bold text-gray-500">QUINCENA</button>
+        <button onclick="showTab('informes')" class="tab-btn flex-1 py-4 px-2 text-xs font-bold text-gray-500">INFORMES</button>
+        <button onclick="showTab('simulador')" class="tab-btn flex-1 py-4 px-2 text-xs font-bold text-gray-500">SIMULADOR</button>
     </nav>
 
-    <main class="p-4 max-w-4xl mx-auto">
+    <main class="p-4 max-w-5xl mx-auto">
 
         <section id="clientes" class="tab-content active">
-            <div class="bg-white p-6 rounded-xl shadow-md">
-                <h2 class="text-lg font-bold mb-4 text-indigo-800 border-b">Registro de Ventas y Créditos</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" id="cli_nombre" placeholder="Nombre del Cliente" class="p-2 border rounded">
-                    <input type="text" id="cli_producto" placeholder="Producto (Joyería)" class="p-2 border rounded">
+            <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+                <h2 class="text-lg font-bold mb-4 text-indigo-800 border-b pb-2">Registro de Ventas (Cartera)</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <input type="text" id="cli_nombre" placeholder="Nombres del Cliente" class="p-2 border rounded">
+                    <input type="text" id="cli_producto" placeholder="Producto Joyería" class="p-2 border rounded">
                     <input type="number" id="cli_costo" placeholder="Costo Material" class="p-2 border rounded">
                     <input type="number" id="cli_venta" placeholder="Precio Venta" class="p-2 border rounded">
                     <input type="number" id="cli_cuotas" placeholder="Número de Cuotas" class="p-2 border rounded">
-                    <button onclick="guardarCliente()" class="md:col-span-2 bg-indigo-600 text-white font-bold py-3 rounded-lg">Guardar Venta</button>
+                    <button onclick="guardarCliente()" class="bg-indigo-600 text-white font-bold py-2 rounded-lg hover:bg-indigo-700">Guardar Registro</button>
                 </div>
             </div>
-            <div class="mt-6 bg-white rounded-xl shadow-md p-4 overflow-x-auto">
+            <div class="bg-white rounded-xl shadow-md overflow-hidden">
                 <table class="w-full text-left text-sm">
-                    <thead>
-                        <tr class="border-b">
-                            <th class="p-2">Nombre</th>
-                            <th class="p-2">Venta</th>
-                            <th class="p-2">Ganancia</th>
-                            <th class="p-2 text-right">Saldo</th>
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="p-3">Cliente / Producto</th>
+                            <th class="p-3">Venta</th>
+                            <th class="p-3">Ganancia</th>
+                            <th class="p-3 text-right">Saldo Pendiente</th>
                         </tr>
                     </thead>
                     <tbody id="tablaClientes"></tbody>
@@ -56,128 +57,208 @@
 
         <section id="prestamos" class="tab-content">
             <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-red-500">
-                <h2 class="text-lg font-bold mb-4">Préstamos para el Emprendimiento</h2>
-                <div class="grid grid-cols-1 gap-4">
-                    <input type="number" id="pre_capital" placeholder="Monto del Préstamo" class="p-2 border rounded">
-                    <input type="number" id="pre_interes" placeholder="Interés Pagado ($)" class="p-2 border rounded">
-                    <button onclick="guardarPrestamo()" class="bg-red-500 text-white font-bold py-3 rounded-lg">Registrar Pasivo</button>
+                <h2 class="text-lg font-bold mb-4">Capital Externo (Pasivos)</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="number" id="pre_capital" placeholder="Monto del Préstamo Recibido" class="p-2 border rounded">
+                    <input type="number" id="pre_interes" placeholder="Interés a Pagar ($)" class="p-2 border rounded">
+                    <button onclick="guardarPrestamo()" class="bg-red-500 text-white font-bold py-2 rounded-lg">Registrar Deuda</button>
                 </div>
             </div>
-            <div class="mt-6 grid grid-cols-2 gap-4">
-                <div class="bg-white p-4 rounded shadow text-center">
-                    <p class="text-xs text-gray-500">TOTAL CAPITAL PRESTADO</p>
-                    <p id="totalPreCapital" class="text-xl font-bold text-red-600">$ 0</p>
-                </div>
-                <div class="bg-white p-4 rounded shadow text-center">
-                    <p class="text-xs text-gray-500">TOTAL INTERÉS PAGADO</p>
-                    <p id="totalPreInteres" class="text-xl font-bold text-gray-800">$ 0</p>
-                </div>
-            </div>
+            <div id="listaPrestamos" class="mt-4 space-y-2"></div>
         </section>
 
         <section id="caja" class="tab-content">
             <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-green-500">
-                <h2 class="text-lg font-bold mb-4">Movimiento Quincenal</h2>
-                <div class="space-y-3">
-                    <div class="flex justify-between"><span>Ingreso Capital Propio (+)</span><input type="number" id="q_propio" class="w-32 border p-1 rounded text-right"></div>
-                    <div class="flex justify-between"><span>Recogida de Créditos (+)</span><input type="number" id="q_recogida" class="w-32 border p-1 rounded text-right"></div>
-                    <div class="flex justify-between"><span>Otros Ingresos (+)</span><input type="number" id="q_otros" class="w-32 border p-1 rounded text-right"></div>
-                    <div class="flex justify-between text-red-600 font-medium"><span>Pagos de Préstamos (-)</span><input type="number" id="q_pagoPre" class="w-32 border p-1 rounded text-right"></div>
-                    <div class="flex justify-between text-red-600 font-medium"><span>Gastos Propios (-)</span><input type="number" id="q_gastos" class="w-32 border p-1 rounded text-right"></div>
-                    <hr>
-                    <div class="flex justify-between font-bold text-lg">
-                        <span>SALDO QUINCENAL:</span>
-                        <span id="saldoQuincenal" class="text-green-600">$ 0</span>
+                <h2 class="text-lg font-bold mb-4">Movimiento Quincenal Detallado</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-3">
+                        <label class="block text-sm font-bold text-gray-700">INGRESOS (+)</label>
+                        <input type="number" id="q_propio" placeholder="Ingreso Capital Propio" class="w-full border p-2 rounded">
+                        <input type="number" id="q_recogida" placeholder="Recogida de Créditos" class="w-full border p-2 rounded">
+                        <input type="number" id="q_otros" placeholder="Otros Ingresos" class="w-full border p-2 rounded">
                     </div>
-                    <button onclick="calcularQuincena()" class="w-full bg-green-600 text-white font-bold py-2 rounded mt-2">Calcular Saldo</button>
+                    <div class="space-y-3">
+                        <label class="block text-sm font-bold text-red-700">EGRESOS (-)</label>
+                        <input type="number" id="q_pagoPre" placeholder="Pagos de Préstamos" class="w-full border p-2 rounded">
+                        <input type="number" id="q_gastos" placeholder="Gastos Propios" class="w-full border p-2 rounded">
+                    </div>
+                </div>
+                <div class="mt-6 p-4 bg-green-50 rounded-lg flex justify-between items-center border-2 border-green-200">
+                    <span class="font-bold text-green-800">SALDO RESTANTE DEL MOVIMIENTO:</span>
+                    <span id="saldoQuincenal" class="text-2xl font-black text-green-700">$ 0</span>
+                </div>
+                <button onclick="calcularQuincena()" class="w-full mt-4 bg-green-600 text-white font-bold py-3 rounded-xl">Procesar Cierre Quincenal</button>
+            </div>
+        </section>
+
+        <section id="informes" class="tab-content">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-white p-6 rounded-xl shadow text-center">
+                    <p class="text-gray-500 text-xs font-bold uppercase">Cartera Total (En la calle)</p>
+                    <p id="inf_cartera" class="text-3xl font-black text-indigo-600">$ 0</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow text-center">
+                    <p class="text-gray-500 text-xs font-bold uppercase">Ganancia Total Proyectada</p>
+                    <p id="inf_ganancia" class="text-3xl font-black text-green-600">$ 0</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow text-center border-t-4 border-red-500">
+                    <p class="text-gray-500 text-xs font-bold uppercase">Deuda de Capital (Préstamos)</p>
+                    <p id="inf_deuda" class="text-3xl font-black text-red-600">$ 0</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow text-center">
+                    <p class="text-gray-500 text-xs font-bold uppercase">Ganancias vs Préstamos (Neto)</p>
+                    <p id="inf_neto" class="text-3xl font-black text-gray-800">$ 0</p>
                 </div>
             </div>
         </section>
 
         <section id="simulador" class="tab-content">
-            <div class="bg-indigo-50 p-6 rounded-xl shadow-inner">
-                <h2 class="text-lg font-bold mb-4 text-indigo-900 text-center">Simulador de Interés Diario (0.66%)</h2>
+            <div class="bg-indigo-50 p-6 rounded-xl border-2 border-indigo-100">
+                <h2 class="text-xl font-black text-indigo-900 mb-4 text-center">Simulador 0.66% Diario</h2>
                 <div class="space-y-4">
-                    <input type="number" id="sim_monto" placeholder="Monto a simular" class="w-full p-3 border-2 border-indigo-200 rounded-lg">
-                    <input type="number" id="sim_dias" placeholder="Número de días" class="w-full p-3 border-2 border-indigo-200 rounded-lg">
-                    <div id="sim_resultado" class="p-4 bg-indigo-600 text-white rounded-lg text-center hidden">
-                        <p class="text-sm">Total a Pagar:</p>
-                        <p id="sim_val_total" class="text-2xl font-bold"></p>
+                    <input type="number" id="sim_monto" placeholder="Monto del Crédito" class="w-full p-4 rounded-lg border-2 border-indigo-200">
+                    <input type="number" id="sim_dias" placeholder="Plazo en Días" class="w-full p-4 rounded-lg border-2 border-indigo-200">
+                    <div id="res_sim" class="hidden p-4 bg-indigo-900 text-white rounded-lg text-center">
+                        <p class="text-xs opacity-70">Total a Cobrar:</p>
+                        <p id="sim_total" class="text-3xl font-bold"></p>
                     </div>
-                    <button onclick="simular()" class="w-full bg-indigo-900 text-white font-bold py-3 rounded-lg shadow-lg">Simular Ahora</button>
+                    <button onclick="ejecutarSimulacion()" class="w-full bg-indigo-600 text-white font-black py-4 rounded-xl shadow-lg">CALCULAR INTERÉS</button>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <footer class="fixed bottom-0 w-full bg-white border-t p-3 text-center">
-        <p class="text-[10px] text-gray-400 font-bold uppercase">Software Registrado bajo Derechos de Autor a:</p>
+    <footer class="fixed bottom-0 w-full bg-white border-t p-4 text-center shadow-2xl">
+        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Software desarrollado por:</p>
         <p class="text-sm text-indigo-700 font-black">VIBRAS POSITIVAS HM</p>
     </footer>
 
     <script>
-        // Lógica de Tabs
+        // ESTADO DE LA APLICACIÓN
+        let appData = {
+            clientes: JSON.parse(localStorage.getItem('joy_cli')) || [],
+            prestamos: JSON.parse(localStorage.getItem('joy_pre')) || []
+        };
+
+        // NAVEGACIÓN
         function showTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('nav button').forEach(b => b.classList.remove('border-b-2', 'border-indigo-600'));
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('border-indigo-600', 'text-indigo-600');
+                b.classList.add('text-gray-500');
+            });
             document.getElementById(tabId).classList.add('active');
-            event.currentTarget.classList.add('border-b-2', 'border-indigo-600');
+            event.currentTarget.classList.add('border-b-2', 'border-indigo-600', 'text-indigo-600');
+            actualizarTablas();
         }
 
-        // Lógica de Clientes
-        let dbClientes = JSON.parse(localStorage.getItem('joy_clientes')) || [];
+        // LÓGICA DE CLIENTES
         function guardarCliente() {
-            const cliente = {
+            const nuevo = {
+                id: Date.now(),
                 nombre: document.getElementById('cli_nombre').value,
                 producto: document.getElementById('cli_producto').value,
-                costo: parseFloat(document.getElementById('cli_costo').value),
-                venta: parseFloat(document.getElementById('cli_venta').value),
+                costo: parseFloat(document.getElementById('cli_costo').value) || 0,
+                venta: parseFloat(document.getElementById('cli_venta').value) || 0,
                 cuotas: document.getElementById('cli_cuotas').value,
-                ganancia: parseFloat(document.getElementById('cli_venta').value) - parseFloat(document.getElementById('cli_costo').value),
-                saldo: parseFloat(document.getElementById('cli_venta').value)
+                saldo: parseFloat(document.getElementById('cli_venta').value) || 0,
+                ganancia: (parseFloat(document.getElementById('cli_venta').value) || 0) - (parseFloat(document.getElementById('cli_costo').value) || 0)
             };
-            dbClientes.push(cliente);
-            localStorage.setItem('joy_clientes', JSON.stringify(dbClientes));
-            renderClientes();
+            appData.clientes.push(nuevo);
+            save();
+            actualizarTablas();
+            limpiarInputs(['cli_nombre', 'cli_producto', 'cli_costo', 'cli_venta', 'cli_cuotas']);
         }
 
-        function renderClientes() {
-            const t = document.getElementById('tablaClientes');
-            t.innerHTML = '';
-            dbClientes.forEach(c => {
-                t.innerHTML += `<tr class="border-b">
-                    <td class="p-2">${c.nombre}<br><span class="text-xs text-gray-400">${c.producto}</span></td>
-                    <td class="p-2">$${c.venta.toLocaleString()}</td>
-                    <td class="p-2 text-green-600 font-bold">$${c.ganancia.toLocaleString()}</td>
-                    <td class="p-2 text-right font-bold">$${c.saldo.toLocaleString()}</td>
-                </tr>`;
-            });
+        // LÓGICA DE PRÉSTAMOS
+        function guardarPrestamo() {
+            const nuevoP = {
+                capital: parseFloat(document.getElementById('pre_capital').value) || 0,
+                interes: parseFloat(document.getElementById('pre_interes').value) || 0
+            };
+            appData.prestamos.push(nuevoP);
+            save();
+            actualizarTablas();
+            limpiarInputs(['pre_capital', 'pre_interes']);
         }
 
-        // Lógica de Simulador Interés Diario 0.66%
-        function simular() {
-            const monto = parseFloat(document.getElementById('sim_monto').value);
-            const dias = parseInt(document.getElementById('sim_dias').value);
-            if(monto && dias) {
-                const total = monto + (monto * (0.0066 * dias));
-                document.getElementById('sim_val_total').innerText = `$ ${total.toLocaleString()}`;
-                document.getElementById('sim_resultado').classList.remove('hidden');
+        // LÓGICA QUINCENAL
+        function calcularQuincena() {
+            const ing = (parseFloat(document.getElementById('q_propio').value) || 0) + 
+                        (parseFloat(document.getElementById('q_recogida').value) || 0) + 
+                        (parseFloat(document.getElementById('q_otros').value) || 0);
+            const egr = (parseFloat(document.getElementById('q_pagoPre').value) || 0) + 
+                        (parseFloat(document.getElementById('q_gastos').value) || 0);
+            
+            document.getElementById('saldoQuincenal').innerText = `$ ${(ing - egr).toLocaleString()}`;
+        }
+
+        // SIMULADOR 0.66%
+        function ejecutarSimulacion() {
+            const m = parseFloat(document.getElementById('sim_monto').value);
+            const d = parseInt(document.getElementById('sim_dias').value);
+            if(m && d) {
+                const total = m + (m * (0.0066 * d));
+                document.getElementById('sim_total').innerText = `$ ${total.toLocaleString()}`;
+                document.getElementById('res_sim').classList.remove('hidden');
             }
         }
 
-        function calcularQuincena() {
-            const prop = parseFloat(document.getElementById('q_propio').value) || 0;
-            const rec = parseFloat(document.getElementById('q_recogida').value) || 0;
-            const otr = parseFloat(document.getElementById('q_otros').value) || 0;
-            const pPre = parseFloat(document.getElementById('q_pagoPre').value) || 0;
-            const gast = parseFloat(document.getElementById('q_gastos').value) || 0;
-            
-            const total = (prop + rec + otr) - (pPre + gast);
-            document.getElementById('saldoQuincenal').innerText = `$ ${total.toLocaleString()}`;
+        // RENDERIZADO Y PERSISTENCIA
+        function save() {
+            localStorage.setItem('joy_cli', JSON.stringify(appData.clientes));
+            localStorage.setItem('joy_pre', JSON.stringify(appData.prestamos));
         }
 
-        renderClientes();
+        function actualizarTablas() {
+            // Tabla Clientes
+            const tbody = document.getElementById('tablaClientes');
+            tbody.innerHTML = '';
+            let carteraTotal = 0;
+            let gananciaTotal = 0;
+
+            appData.clientes.forEach(c => {
+                carteraTotal += c.saldo;
+                gananciaTotal += c.ganancia;
+                tbody.innerHTML += `
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="p-3 font-bold text-indigo-900">${c.nombre}<br><span class="text-[10px] text-gray-400 font-normal uppercase">${c.producto}</span></td>
+                        <td class="p-3">$${c.venta.toLocaleString()}</td>
+                        <td class="p-3 text-green-600 font-bold">$${c.ganancia.toLocaleString()}</td>
+                        <td class="p-3 text-right font-black">$${c.saldo.toLocaleString()}</td>
+                    </tr>`;
+            });
+
+            // Lista Préstamos
+            const preList = document.getElementById('listaPrestamos');
+            preList.innerHTML = '';
+            let deudaTotal = 0;
+            let interesTotal = 0;
+
+            appData.prestamos.forEach(p => {
+                deudaTotal += p.capital;
+                interesTotal += p.interes;
+                preList.innerHTML += `
+                    <div class="bg-red-50 p-3 rounded flex justify-between text-sm border border-red-100">
+                        <span>Capital: <b>$${p.capital.toLocaleString()}</b></span>
+                        <span class="text-red-700">Interés: $${p.interes.toLocaleString()}</span>
+                    </div>`;
+            });
+
+            // Actualizar Informe
+            document.getElementById('inf_cartera').innerText = `$ ${carteraTotal.toLocaleString()}`;
+            document.getElementById('inf_ganancia').innerText = `$ ${gananciaTotal.toLocaleString()}`;
+            document.getElementById('inf_deuda').innerText = `$ ${deudaTotal.toLocaleString()}`;
+            document.getElementById('inf_neto').innerText = `$ ${(gananciaTotal - interesTotal).toLocaleString()}`;
+        }
+
+        function limpiarInputs(ids) {
+            ids.forEach(id => document.getElementById(id).value = '');
+        }
+
+        // Inicialización
+        actualizarTablas();
     </script>
 </body>
 </html>
