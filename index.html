@@ -3,130 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Joyería Finanzas | VIBRAS POSITIVAS HM</title>
+    <title>Business Suite | VIBRAS POSITIVAS HM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .card { background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .bg-vibras { background-color: #f3f4f6; }
     </style>
 </head>
-<body class="p-4">
+<body class="bg-vibras pb-20">
 
-    <header class="text-center mb-6">
-        <h1 class="text-2xl font-bold text-gray-800">💎 JoyeriApp Pro</h1>
-        <p class="text-sm text-gray-500 italic">Organiza tu brillo, controla tu dinero</p>
+    <header class="bg-indigo-900 text-white p-6 shadow-lg text-center">
+        <h1 class="text-2xl font-bold">💎 JoyeriApp Business</h1>
+        <p class="text-xs opacity-80 uppercase tracking-widest">Gestión Integral de Emprendimiento</p>
     </header>
 
-    <div class="grid grid-cols-2 gap-4 mb-6">
-        <div class="card p-4 text-center border-t-4 border-green-500">
-            <p class="text-xs uppercase text-gray-500 font-bold">Ventas Totales</p>
-            <p id="totalVentas" class="text-xl font-bold text-green-600">$ 0</p>
-        </div>
-        <div class="card p-4 text-center border-t-4 border-blue-500">
-            <p class="text-xs uppercase text-gray-500 font-bold">Utilidad Neta</p>
-            <p id="totalUtilidad" class="text-xl font-bold text-blue-600">$ 0</p>
-        </div>
-    </div>
+    <nav class="flex overflow-x-auto bg-white border-b sticky top-0 z-10">
+        <button onclick="showTab('clientes')" class="flex-1 py-3 px-4 text-sm font-bold border-b-2 border-indigo-600">CLIENTES</button>
+        <button onclick="showTab('prestamos')" class="flex-1 py-3 px-4 text-sm font-bold">PRÉSTAMOS</button>
+        <button onclick="showTab('caja')" class="flex-1 py-3 px-4 text-sm font-bold">MOV. QUINCENAL</button>
+        <button onclick="showTab('simulador')" class="flex-1 py-3 px-4 text-sm font-bold">SIMULADOR</button>
+    </nav>
 
-    <div class="card p-6 mb-6">
-        <h2 class="text-lg font-semibold mb-4 border-b pb-2 text-gray-700">Registrar Nueva Pieza</h2>
-        <div class="space-y-4">
-            <div>
-                <label class="block text-sm font-medium text-gray-600">Nombre de la Joya</label>
-                <input type="text" id="nombreJoya" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-amber-400 outline-none" placeholder="Ej: Anillo de Plata">
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-600">Costo Materiales</label>
-                    <input type="number" id="costoMaterial" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-amber-400 outline-none" placeholder="0.00">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-600">Precio Venta</label>
-                    <input type="number" id="precioVenta" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-amber-400 outline-none" placeholder="0.00">
+    <main class="p-4 max-w-4xl mx-auto">
+
+        <section id="clientes" class="tab-content active">
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h2 class="text-lg font-bold mb-4 text-indigo-800 border-b">Registro de Ventas y Créditos</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" id="cli_nombre" placeholder="Nombre del Cliente" class="p-2 border rounded">
+                    <input type="text" id="cli_producto" placeholder="Producto (Joyería)" class="p-2 border rounded">
+                    <input type="number" id="cli_costo" placeholder="Costo Material" class="p-2 border rounded">
+                    <input type="number" id="cli_venta" placeholder="Precio Venta" class="p-2 border rounded">
+                    <input type="number" id="cli_cuotas" placeholder="Número de Cuotas" class="p-2 border rounded">
+                    <button onclick="guardarCliente()" class="md:col-span-2 bg-indigo-600 text-white font-bold py-3 rounded-lg">Guardar Venta</button>
                 </div>
             </div>
-            <button onclick="agregarVenta()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
-                Guardar Venta
-            </button>
-        </div>
-    </div>
+            <div class="mt-6 bg-white rounded-xl shadow-md p-4 overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead>
+                        <tr class="border-b">
+                            <th class="p-2">Nombre</th>
+                            <th class="p-2">Venta</th>
+                            <th class="p-2">Ganancia</th>
+                            <th class="p-2 text-right">Saldo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaClientes"></tbody>
+                </table>
+            </div>
+        </section>
 
-    <div class="card p-6">
-        <h2 class="text-lg font-semibold mb-4 text-gray-700">Historial de Ventas</h2>
-        <div class="overflow-x-auto">
-            <table class="w-full text-left">
-                <thead>
-                    <tr class="text-xs uppercase text-gray-400 border-b">
-                        <th class="py-2">Joya</th>
-                        <th class="py-2">Venta</th>
-                        <th class="py-2 text-right">Utilidad</th>
-                    </tr>
-                </thead>
-                <tbody id="listaVentas" class="text-sm text-gray-600">
-                    </tbody>
-            </table>
-        </div>
-    </div>
+        <section id="prestamos" class="tab-content">
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-red-500">
+                <h2 class="text-lg font-bold mb-4">Préstamos para el Emprendimiento</h2>
+                <div class="grid grid-cols-1 gap-4">
+                    <input type="number" id="pre_capital" placeholder="Monto del Préstamo" class="p-2 border rounded">
+                    <input type="number" id="pre_interes" placeholder="Interés Pagado ($)" class="p-2 border rounded">
+                    <button onclick="guardarPrestamo()" class="bg-red-500 text-white font-bold py-3 rounded-lg">Registrar Pasivo</button>
+                </div>
+            </div>
+            <div class="mt-6 grid grid-cols-2 gap-4">
+                <div class="bg-white p-4 rounded shadow text-center">
+                    <p class="text-xs text-gray-500">TOTAL CAPITAL PRESTADO</p>
+                    <p id="totalPreCapital" class="text-xl font-bold text-red-600">$ 0</p>
+                </div>
+                <div class="bg-white p-4 rounded shadow text-center">
+                    <p class="text-xs text-gray-500">TOTAL INTERÉS PAGADO</p>
+                    <p id="totalPreInteres" class="text-xl font-bold text-gray-800">$ 0</p>
+                </div>
+            </div>
+        </section>
 
-    <footer class="mt-10 text-center border-t pt-4">
-        <p class="text-xs text-gray-400 font-bold uppercase tracking-widest">
-            © 2026 Todos los derechos reservados a:
-        </p>
-        <p class="text-sm text-amber-600 font-extrabold">VIBRAS POSITIVAS HM</p>
+        <section id="caja" class="tab-content">
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-green-500">
+                <h2 class="text-lg font-bold mb-4">Movimiento Quincenal</h2>
+                <div class="space-y-3">
+                    <div class="flex justify-between"><span>Ingreso Capital Propio (+)</span><input type="number" id="q_propio" class="w-32 border p-1 rounded text-right"></div>
+                    <div class="flex justify-between"><span>Recogida de Créditos (+)</span><input type="number" id="q_recogida" class="w-32 border p-1 rounded text-right"></div>
+                    <div class="flex justify-between"><span>Otros Ingresos (+)</span><input type="number" id="q_otros" class="w-32 border p-1 rounded text-right"></div>
+                    <div class="flex justify-between text-red-600 font-medium"><span>Pagos de Préstamos (-)</span><input type="number" id="q_pagoPre" class="w-32 border p-1 rounded text-right"></div>
+                    <div class="flex justify-between text-red-600 font-medium"><span>Gastos Propios (-)</span><input type="number" id="q_gastos" class="w-32 border p-1 rounded text-right"></div>
+                    <hr>
+                    <div class="flex justify-between font-bold text-lg">
+                        <span>SALDO QUINCENAL:</span>
+                        <span id="saldoQuincenal" class="text-green-600">$ 0</span>
+                    </div>
+                    <button onclick="calcularQuincena()" class="w-full bg-green-600 text-white font-bold py-2 rounded mt-2">Calcular Saldo</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="simulador" class="tab-content">
+            <div class="bg-indigo-50 p-6 rounded-xl shadow-inner">
+                <h2 class="text-lg font-bold mb-4 text-indigo-900 text-center">Simulador de Interés Diario (0.66%)</h2>
+                <div class="space-y-4">
+                    <input type="number" id="sim_monto" placeholder="Monto a simular" class="w-full p-3 border-2 border-indigo-200 rounded-lg">
+                    <input type="number" id="sim_dias" placeholder="Número de días" class="w-full p-3 border-2 border-indigo-200 rounded-lg">
+                    <div id="sim_resultado" class="p-4 bg-indigo-600 text-white rounded-lg text-center hidden">
+                        <p class="text-sm">Total a Pagar:</p>
+                        <p id="sim_val_total" class="text-2xl font-bold"></p>
+                    </div>
+                    <button onclick="simular()" class="w-full bg-indigo-900 text-white font-bold py-3 rounded-lg shadow-lg">Simular Ahora</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="fixed bottom-0 w-full bg-white border-t p-3 text-center">
+        <p class="text-[10px] text-gray-400 font-bold uppercase">Software Registrado bajo Derechos de Autor a:</p>
+        <p class="text-sm text-indigo-700 font-black">VIBRAS POSITIVAS HM</p>
     </footer>
 
     <script>
-        let ventas = JSON.parse(localStorage.getItem('ventasJoyería')) || [];
-
-        function agregarVenta() {
-            const nombre = document.getElementById('nombreJoya').value;
-            const costo = parseFloat(document.getElementById('costoMaterial').value);
-            const venta = parseFloat(document.getElementById('precioVenta').value);
-
-            if (!nombre || isNaN(costo) || isNaN(venta)) {
-                alert("Por favor completa todos los campos correctamente.");
-                return;
-            }
-
-            const utilidad = venta - costo;
-            const nuevaVenta = { nombre, costo, venta, utilidad, fecha: new Date().toLocaleDateString() };
-
-            ventas.push(nuevaVenta);
-            localStorage.setItem('ventasJoyería', JSON.stringify(ventas));
-            
-            // Limpiar inputs
-            document.getElementById('nombreJoya').value = '';
-            document.getElementById('costoMaterial').value = '';
-            document.getElementById('precioVenta').value = '';
-
-            actualizarInterfaz();
+        // Lógica de Tabs
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('border-b-2', 'border-indigo-600'));
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('border-b-2', 'border-indigo-600');
         }
 
-        function actualizarInterfaz() {
-            const lista = document.getElementById('listaVentas');
-            lista.innerHTML = '';
-            
-            let totalV = 0;
-            let totalU = 0;
+        // Lógica de Clientes
+        let dbClientes = JSON.parse(localStorage.getItem('joy_clientes')) || [];
+        function guardarCliente() {
+            const cliente = {
+                nombre: document.getElementById('cli_nombre').value,
+                producto: document.getElementById('cli_producto').value,
+                costo: parseFloat(document.getElementById('cli_costo').value),
+                venta: parseFloat(document.getElementById('cli_venta').value),
+                cuotas: document.getElementById('cli_cuotas').value,
+                ganancia: parseFloat(document.getElementById('cli_venta').value) - parseFloat(document.getElementById('cli_costo').value),
+                saldo: parseFloat(document.getElementById('cli_venta').value)
+            };
+            dbClientes.push(cliente);
+            localStorage.setItem('joy_clientes', JSON.stringify(dbClientes));
+            renderClientes();
+        }
 
-            ventas.forEach((v) => {
-                totalV += v.venta;
-                totalU += v.utilidad;
-                
-                const row = `<tr class="border-b">
-                    <td class="py-3 font-medium">${v.nombre}</td>
-                    <td class="py-3">$ ${v.venta.toLocaleString()}</td>
-                    <td class="py-3 text-right text-green-600 font-bold">$ ${v.utilidad.toLocaleString()}</td>
+        function renderClientes() {
+            const t = document.getElementById('tablaClientes');
+            t.innerHTML = '';
+            dbClientes.forEach(c => {
+                t.innerHTML += `<tr class="border-b">
+                    <td class="p-2">${c.nombre}<br><span class="text-xs text-gray-400">${c.producto}</span></td>
+                    <td class="p-2">$${c.venta.toLocaleString()}</td>
+                    <td class="p-2 text-green-600 font-bold">$${c.ganancia.toLocaleString()}</td>
+                    <td class="p-2 text-right font-bold">$${c.saldo.toLocaleString()}</td>
                 </tr>`;
-                lista.innerHTML += row;
             });
-
-            document.getElementById('totalVentas').innerText = `$ ${totalV.toLocaleString()}`;
-            document.getElementById('totalUtilidad').innerText = `$ ${totalU.toLocaleString()}`;
         }
 
-        // Cargar datos al iniciar
-        actualizarInterfaz();
+        // Lógica de Simulador Interés Diario 0.66%
+        function simular() {
+            const monto = parseFloat(document.getElementById('sim_monto').value);
+            const dias = parseInt(document.getElementById('sim_dias').value);
+            if(monto && dias) {
+                const total = monto + (monto * (0.0066 * dias));
+                document.getElementById('sim_val_total').innerText = `$ ${total.toLocaleString()}`;
+                document.getElementById('sim_resultado').classList.remove('hidden');
+            }
+        }
+
+        function calcularQuincena() {
+            const prop = parseFloat(document.getElementById('q_propio').value) || 0;
+            const rec = parseFloat(document.getElementById('q_recogida').value) || 0;
+            const otr = parseFloat(document.getElementById('q_otros').value) || 0;
+            const pPre = parseFloat(document.getElementById('q_pagoPre').value) || 0;
+            const gast = parseFloat(document.getElementById('q_gastos').value) || 0;
+            
+            const total = (prop + rec + otr) - (pPre + gast);
+            document.getElementById('saldoQuincenal').innerText = `$ ${total.toLocaleString()}`;
+        }
+
+        renderClientes();
     </script>
 </body>
 </html>
