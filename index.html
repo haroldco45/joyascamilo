@@ -3,92 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JoyeriApp Pro</title>
+    <title>JoyeriApp Pro | VIBRAS POSITIVAS HM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        body { background-color: #f0f2f5; }
-        .btn-vibras { background-color: #4f46e5; transition: all 0.3s; }
-        .btn-vibras:hover { background-color: #4338ca; transform: translateY(-1px); }
+        .btn-categoria { transition: all 0.2s; border: 2px solid transparent; }
+        .btn-categoria:active { transform: scale(0.95); }
+        .oro { background-color: #fef3c7; color: #92400e; border-color: #f59e0b; }
+        .plata { background-color: #f3f4f6; color: #374151; border-color: #9ca3af; }
+        .reloj { background-color: #dbeafe; color: #1e40af; border-color: #3b82f6; }
     </style>
 </head>
-<body class="pb-32">
+<body class="bg-gray-50 pb-32">
 
-    <div id="sub-bar" class="bg-black text-white text-[10px] py-1 px-4 flex justify-between items-center">
-        <span>ESTADO: <span class="text-green-400 font-bold">SUSCRIPCIÓN ACTIVA</span></span>
-        <span id="reloj-vencimiento" class="font-mono">Cargando vencimiento...</span>
+    <div class="bg-black text-white text-[10px] py-1 px-4 flex justify-between items-center">
+        <span class="font-bold text-green-400">● SUSCRIPCIÓN ACTIVA</span>
+        <span id="reloj-vencimiento" class="font-mono">Vence en: 29d 10h</span>
     </div>
 
-    <header class="bg-indigo-900 text-white p-6 shadow-2xl text-center">
+    <header class="bg-indigo-900 text-white p-6 shadow-lg text-center">
         <h1 class="text-2xl font-bold">💎 JoyeriApp Business</h1>
-        <p class="text-[10px] opacity-70 uppercase tracking-[0.2em]">Soporte Técnico: VIBRAS POSITIVAS HM</p>
+        <p class="text-[10px] opacity-70 uppercase">Desarrollo: VIBRAS POSITIVAS HM</p>
     </header>
 
-    <nav class="flex overflow-x-auto bg-white border-b sticky top-0 z-20 shadow-sm">
-        <button onclick="showTab('clientes')" class="tab-btn flex-1 py-4 px-2 text-xs font-bold border-b-2 border-indigo-600 text-indigo-600">CLIENTES</button>
-        <button onclick="showTab('quincena')" class="tab-btn flex-1 py-4 px-2 text-xs font-bold text-gray-500">QUINCENA</button>
-        <button onclick="showTab('utilidades')" class="tab-btn flex-1 py-4 px-2 text-xs font-bold text-gray-500">UTILIDADES</button>
-        <button onclick="showTab('sistema')" class="tab-btn flex-1 py-4 px-2 text-xs font-bold text-gray-500">SISTEMA</button>
+    <nav class="flex bg-white border-b sticky top-0 z-20 shadow-sm">
+        <button onclick="showTab('cobrar')" class="tab-btn flex-1 py-4 text-xs font-bold border-b-2 border-indigo-600 text-indigo-600">CUENTAS POR COBRAR</button>
+        <button onclick="showTab('pagar')" class="tab-btn flex-1 py-4 text-xs font-bold text-gray-400">CUENTAS POR PAGAR</button>
+        <button onclick="showTab('sistema')" class="tab-btn flex-1 py-4 text-xs font-bold text-gray-400">SISTEMA / BACKUP</button>
     </nav>
 
     <main class="p-4 max-w-5xl mx-auto">
 
-        <section id="clientes" class="tab-content active">
-            <div class="bg-white p-6 rounded-xl shadow-md mb-6 border-t-4 border-indigo-500">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-bold text-gray-700">Gestión de Clientes</h2>
-                    <div class="flex gap-2">
-                        <button onclick="filtrar('ORO')" class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-[10px] font-bold">ORO</button>
-                        <button onclick="filtrar('PLATA')" class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-[10px] font-bold">PLATA</button>
-                        <button onclick="filtrar('RELOJ')" class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-[10px] font-bold">RELOJ</button>
-                    </div>
-                </div>
+        <section id="cobrar" class="tab-content active">
+            <div class="bg-white p-6 rounded-xl shadow-sm mb-6 border border-gray-200">
+                <h2 class="text-sm font-bold mb-4 text-gray-800 uppercase">Seleccione Categoría de Joya:</h2>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                    <input type="text" id="cli_nombre" placeholder="Nombre completo" class="p-2 border rounded text-sm">
-                    <select id="cli_cat" class="p-2 border rounded text-sm bg-gray-50">
-                        <option value="ORO">Categoría: ORO</option>
-                        <option value="PLATA">Categoría: PLATA</option>
-                        <option value="RELOJ">Categoría: RELOJES</option>
-                        <option value="OTROS">OTROS</option>
-                    </select>
-                    <input type="number" id="cli_venta" placeholder="Venta Total" class="p-2 border rounded text-sm">
-                    <input type="number" id="cli_costo" placeholder="Costo Material" class="p-2 border rounded text-sm">
-                    <button onclick="guardarDato()" id="btn-save" class="lg:col-span-2 btn-vibras text-white font-bold py-2 rounded-lg text-sm">Guardar Registro</button>
+                <div class="grid grid-cols-3 gap-3 mb-6">
+                    <button onclick="setCat('ORO')" class="btn-categoria oro p-4 rounded-xl text-center font-bold shadow-sm">✨ ORO</button>
+                    <button onclick="setCat('PLATA')" class="btn-categoria plata p-4 rounded-xl text-center font-bold shadow-sm">🥈 PLATA</button>
+                    <button onclick="setCat('RELOJ')" class="btn-categoria reloj p-4 rounded-xl text-center font-bold shadow-sm">⌚ RELOJ</button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" id="cli_nombre" placeholder="Nombre del Cliente" class="p-3 border rounded-lg w-full">
+                    <input type="number" id="cli_venta" placeholder="Valor de Venta ($)" class="p-3 border rounded-lg w-full">
+                    <input type="number" id="cli_costo" placeholder="Costo de Adquisición ($)" class="p-3 border rounded-lg w-full">
+                    <button onclick="guardarRegistro('CLIENTE')" id="btn-main" class="md:col-span-2 bg-indigo-600 text-white font-bold py-3 rounded-lg shadow-md">GUARDAR EN CUENTAS POR COBRAR</button>
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-md overflow-x-auto">
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden border">
                 <table class="w-full text-left text-xs">
-                    <thead class="bg-gray-100 text-gray-600 uppercase">
+                    <thead class="bg-gray-50 text-gray-500 uppercase">
                         <tr>
-                            <th class="p-4">Categoría</th>
-                            <th class="p-4">Nombre / Detalle</th>
-                            <th class="p-4">Ganancia</th>
-                            <th class="p-4">Acciones</th>
+                            <th class="p-4">Cata.</th>
+                            <th class="p-4">Cliente</th>
+                            <th class="p-4">Saldo</th>
+                            <th class="p-4 text-center">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody id="tablaMain"></tbody>
+                    <tbody id="listaCobrar"></tbody>
                 </table>
             </div>
         </section>
 
+        <section id="pagar" class="tab-content">
+            <div class="bg-red-50 p-6 rounded-xl shadow-sm mb-6 border border-red-100">
+                <h2 class="text-sm font-bold mb-4 text-red-800 uppercase">Registro de Deudas a Proveedores</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" id="prov_nombre" placeholder="Nombre del Proveedor" class="p-3 border rounded-lg">
+                    <input type="number" id="prov_deuda" placeholder="Monto que debo pagar ($)" class="p-3 border rounded-lg">
+                    <button onclick="guardarRegistro('PROVEEDOR')" class="md:col-span-2 bg-red-600 text-white font-bold py-3 rounded-lg shadow-md">REGISTRAR CUENTA POR PAGAR</button>
+                </div>
+            </div>
+            <div id="listaPagar" class="space-y-2"></div>
+        </section>
+
         <section id="sistema" class="tab-content">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                    <h3 class="font-bold mb-4 text-indigo-900 uppercase text-sm">Exportación Masiva</h3>
-                    <button onclick="exportarExcel()" class="w-full bg-green-600 text-white py-3 rounded-lg font-bold flex items-center justify-center gap-2">
-                        📊 Exportar a Excel (.xlsx)
-                    </button>
+                <div class="bg-white p-6 rounded-xl shadow border">
+                    <h3 class="font-bold mb-4">EXPORTAR DATOS</h3>
+                    <button onclick="exportarExcel()" class="w-full bg-green-600 text-white py-4 rounded-lg font-bold">📊 DESCARGAR EXCEL</button>
                 </div>
-                
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                    <h3 class="font-bold mb-4 text-indigo-900 uppercase text-sm">Respaldo de Seguridad</h3>
-                    <div class="space-y-3">
-                        <button onclick="copiarBackup()" class="w-full bg-gray-800 text-white py-2 rounded-lg text-sm">Copiar Código de Backup</button>
-                        <button onclick="restaurarBackup()" class="w-full border-2 border-gray-800 text-gray-800 py-2 rounded-lg text-sm">Restaurar desde Código</button>
+                <div class="bg-white p-6 rounded-xl shadow border">
+                    <h3 class="font-bold mb-4">SEGURIDAD (BACKUP)</h3>
+                    <div class="flex flex-col gap-2">
+                        <button onclick="copiarBackup()" class="bg-gray-800 text-white py-2 rounded">COPIAR CÓDIGO BACKUP</button>
+                        <button onclick="restaurarBackup()" class="border-2 border-gray-800 py-2 rounded font-bold">RESTAURAR DATOS</button>
                     </div>
                 </div>
             </div>
@@ -96,134 +99,130 @@
 
     </main>
 
-    <footer class="fixed bottom-0 w-full bg-white border-t p-4 text-center shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
-        <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest">App Desarrollada por:</p>
-        <p class="text-sm text-indigo-700 font-black">VIBRAS POSITIVAS HM © 2026</p>
-        <p class="text-[8px] text-gray-400 mt-1">Derechos Reservados - Seguridad Encriptada Local</p>
+    <footer class="fixed bottom-0 w-full bg-white border-t p-4 text-center shadow-lg">
+        <p class="text-[9px] text-gray-400 font-bold uppercase">Software bajo Derechos de Autor a:</p>
+        <p class="text-sm text-indigo-700 font-black italic">VIBRAS POSITIVAS HM © 2026</p>
     </footer>
 
     <script>
-        let db = JSON.parse(localStorage.getItem('joyeria_v3')) || [];
+        let db = JSON.parse(localStorage.getItem('joyeria_v4')) || { clientes: [], proveedores: [] };
+        let currentCat = 'ORO';
         let editId = null;
 
-        // --- CONTROL DE SUBSCRIPCIÓN (Reloj) ---
-        function actualizarReloj() {
-            const fechaFin = new Date("2026-05-21T00:00:00"); // Ejemplo 1 mes
-            const ahora = new Date();
-            const dif = fechaFin - ahora;
-
-            if (dif <= 0) {
-                document.getElementById('reloj-vencimiento').innerText = "SUBSCRIPCIÓN VENCIDA";
-                document.body.innerHTML = "<h1 style='text-align:center; margin-top:100px;'>Renueve su suscripción con VIBRAS POSITIVAS HM</h1>";
-                return;
-            }
-
-            const dias = Math.floor(dif / (1000 * 60 * 60 * 24));
-            const horas = Math.floor((dif / (1000 * 60 * 60)) % 24);
-            document.getElementById('reloj-vencimiento').innerText = `Vence en: ${dias}d ${horas}h`;
-        }
-        setInterval(actualizarReloj, 60000);
-        actualizarReloj();
-
-        // --- NAVEGACIÓN ---
         function showTab(id) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('border-b-2', 'border-indigo-600', 'text-indigo-600'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('border-indigo-600', 'text-indigo-600'));
             document.getElementById(id).classList.add('active');
-            event.currentTarget.classList.add('border-b-2', 'border-indigo-600', 'text-indigo-600');
-        }
-
-        // --- CRUD INTEGRADO ---
-        function guardarDato() {
-            const data = {
-                id: editId || Date.now(),
-                nombre: document.getElementById('cli_nombre').value,
-                cat: document.getElementById('cli_cat').value,
-                venta: parseFloat(document.getElementById('cli_venta').value) || 0,
-                costo: parseFloat(document.getElementById('cli_costo').value) || 0,
-                ganancia: (parseFloat(document.getElementById('cli_venta').value) || 0) - (parseFloat(document.getElementById('cli_costo').value) || 0)
-            };
-
-            if(editId) {
-                db = db.map(item => item.id === editId ? data : item);
-                editId = null;
-                document.getElementById('btn-save').innerText = "Guardar Registro";
-            } else {
-                db.push(data);
-            }
-
-            localStorage.setItem('joyeria_v3', JSON.stringify(db));
+            event.currentTarget.classList.add('border-indigo-600', 'text-indigo-600');
             render();
-            limpiar();
         }
 
-        function render(filtro = null) {
-            const tbody = document.getElementById('tablaMain');
-            tbody.innerHTML = '';
-            const mostrar = filtro ? db.filter(i => i.cat === filtro) : db;
+        function setCat(cat) {
+            currentCat = cat;
+            alert("Categoría seleccionada: " + cat);
+        }
 
-            mostrar.forEach(i => {
-                tbody.innerHTML += `
-                    <tr class="border-b bg-white">
-                        <td class="p-4"><span class="px-2 py-1 rounded bg-indigo-50 text-indigo-700 font-bold text-[9px]">${i.cat}</span></td>
-                        <td class="p-4 font-bold text-gray-700">${i.nombre}<br><span class="font-normal text-gray-400">$${i.venta.toLocaleString()}</span></td>
-                        <td class="p-4 text-green-600 font-bold">$${i.ganancia.toLocaleString()}</td>
-                        <td class="p-4">
-                            <button onclick="editar(${i.id})" class="text-blue-600 mr-2 font-bold">EDITAR</button>
-                            <button onclick="borrar(${i.id})" class="text-red-400 font-bold">X</button>
-                        </td>
-                    </tr>`;
+        function guardarRegistro(tipo) {
+            if (tipo === 'CLIENTE') {
+                const item = {
+                    id: editId || Date.now(),
+                    cat: currentCat,
+                    nombre: document.getElementById('cli_nombre').value,
+                    venta: parseFloat(document.getElementById('cli_venta').value) || 0,
+                    costo: parseFloat(document.getElementById('cli_costo').value) || 0,
+                    ganancia: (parseFloat(document.getElementById('cli_venta').value) || 0) - (parseFloat(document.getElementById('cli_costo').value) || 0)
+                };
+                if(editId) db.clientes = db.clientes.map(c => c.id === editId ? item : c);
+                else db.clientes.push(item);
+            } else {
+                db.proveedores.push({
+                    id: Date.now(),
+                    nombre: document.getElementById('prov_nombre').value,
+                    deuda: parseFloat(document.getElementById('prov_deuda').value) || 0
+                });
+            }
+            editId = null;
+            document.getElementById('btn-main').innerText = "GUARDAR EN CUENTAS POR COBRAR";
+            save();
+        }
+
+        function render() {
+            // Render Clientes (Cobrar)
+            const tCobrar = document.getElementById('listaCobrar');
+            tCobrar.innerHTML = '';
+            db.clientes.forEach(c => {
+                tCobrar.innerHTML += `
+                <tr class="border-b">
+                    <td class="p-4 font-bold text-[10px]">${c.cat}</td>
+                    <td class="p-4 font-bold">${c.nombre}</td>
+                    <td class="p-4 text-green-600 font-bold">$${c.venta.toLocaleString()}</td>
+                    <td class="p-4 text-center">
+                        <button onclick="editar(${c.id})" class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-[10px] font-bold">EDITAR</button>
+                        <button onclick="borrar(${c.id}, 'CLI')" class="text-red-500 font-bold ml-2">X</button>
+                    </td>
+                </tr>`;
+            });
+
+            // Render Proveedores (Pagar)
+            const tPagar = document.getElementById('listaPagar');
+            tPagar.innerHTML = '';
+            db.proveedores.forEach(p => {
+                tPagar.innerHTML += `
+                <div class="bg-white p-4 rounded-lg shadow-sm border border-red-100 flex justify-between items-center">
+                    <div><p class="text-[10px] text-gray-400 font-bold uppercase">PROVEEDOR</p><p class="font-bold">${p.nombre}</p></div>
+                    <div class="text-right">
+                        <p class="text-red-600 font-black">$${p.deuda.toLocaleString()}</p>
+                        <button onclick="borrar(${p.id}, 'PROV')" class="text-[10px] text-gray-300 font-bold uppercase">Eliminar</button>
+                    </div>
+                </div>`;
             });
         }
 
         function editar(id) {
-            const item = db.find(i => i.id === id);
-            document.getElementById('cli_nombre').value = item.nombre;
-            document.getElementById('cli_cat').value = item.cat;
-            document.getElementById('cli_venta').value = item.venta;
-            document.getElementById('cli_costo').value = item.costo;
+            const c = db.clientes.find(i => i.id === id);
+            document.getElementById('cli_nombre').value = c.nombre;
+            document.getElementById('cli_venta').value = c.venta;
+            document.getElementById('cli_costo').value = c.costo;
+            currentCat = c.cat;
             editId = id;
-            document.getElementById('btn-save').innerText = "Actualizar Registro";
-            showTab('clientes');
+            document.getElementById('btn-main').innerText = "ACTUALIZAR DATOS";
         }
 
-        function borrar(id) {
-            if(confirm("¿Eliminar este registro?")) {
-                db = db.filter(i => i.id !== id);
-                localStorage.setItem('joyeria_v3', JSON.stringify(db));
-                render();
+        function borrar(id, tipo) {
+            if(confirm("¿Seguro que desea eliminar?")) {
+                if(tipo === 'CLI') db.clientes = db.clientes.filter(i => i.id !== id);
+                else db.proveedores = db.proveedores.filter(i => i.id !== id);
+                save();
             }
         }
 
-        // --- SISTEMA: EXCEL, BACKUP ---
+        function save() {
+            localStorage.setItem('joyeria_v4', JSON.stringify(db));
+            render();
+            document.querySelectorAll('input').forEach(i => i.value = '');
+        }
+
         function exportarExcel() {
-            const ws = XLSX.utils.json_to_sheet(db);
+            const ws_c = XLSX.utils.json_to_sheet(db.clientes);
+            const ws_p = XLSX.utils.json_to_sheet(db.proveedores);
             const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Joyeria_Finanzas");
-            XLSX.writeFile(wb, "Joyeria_Camilo_Business.xlsx");
+            XLSX.utils.book_append_sheet(wb, ws_c, "Clientes_Por_Cobrar");
+            XLSX.utils.book_append_sheet(wb, ws_p, "Proveedores_Por_Pagar");
+            XLSX.writeFile(wb, "Cartera_Joyeria_HM.xlsx");
         }
 
         function copiarBackup() {
             const code = btoa(JSON.stringify(db));
             navigator.clipboard.writeText(code);
-            alert("Código de Backup copiado al portapapeles. Guárdalo en un lugar seguro.");
+            alert("Código de Backup copiado.");
         }
 
         function restaurarBackup() {
-            const code = prompt("Pega el código de Backup aquí:");
+            const code = prompt("Pegue el código de Backup:");
             if(code) {
-                try {
-                    db = JSON.parse(atob(code));
-                    localStorage.setItem('joyeria_v3', JSON.stringify(db));
-                    render();
-                    alert("Datos restaurados con éxito.");
-                } catch(e) { alert("Código inválido."); }
+                db = JSON.parse(atob(code));
+                save();
             }
-        }
-
-        function filtrar(cat) { render(cat); }
-        function limpiar() {
-            document.querySelectorAll('input').forEach(i => i.value = '');
         }
 
         render();
