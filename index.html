@@ -3,227 +3,284 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JoyeriApp Pro </title>
+    <title>Master Control | VIBRAS POSITIVAS HM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .btn-categoria { transition: all 0.2s; border: 2px solid transparent; }
-        .btn-categoria:active { transform: scale(0.95); }
-        .oro { background-color: #fef3c7; color: #92400e; border-color: #f59e0b; }
-        .plata { background-color: #f3f4f6; color: #374151; border-color: #9ca3af; }
-        .reloj { background-color: #dbeafe; color: #1e40af; border-color: #3b82f6; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="bg-gray-50 pb-32">
+<body class="bg-slate-50 pb-40">
 
-    <div class="bg-black text-white text-[10px] py-1 px-4 flex justify-between items-center">
+    <div class="bg-black text-white text-[10px] py-1 px-4 flex justify-between items-center sticky top-0 z-50">
         <span class="font-bold text-green-400">● SUSCRIPCIÓN ACTIVA</span>
         <span id="reloj-vencimiento" class="font-mono">Vence en: 29d 10h</span>
     </div>
 
-    <header class="bg-indigo-900 text-white p-6 shadow-lg text-center">
-        <h1 class="text-2xl font-bold">💎 JoyeriApp Business</h1>
-        <p class="text-[10px] opacity-70 uppercase">Desarrollo: VIBRAS POSITIVAS HM</p>
+    <header class="bg-indigo-900 text-white p-6 shadow-xl text-center">
+        <h1 class="text-2xl font-black italic tracking-tighter">💎 JOYERIAPP BUSINESS PRO</h1>
+        <p class="text-[10px] opacity-70 uppercase tracking-widest">Soporte: VIBRAS POSITIVAS HM</p>
     </header>
 
-    <nav class="flex bg-white border-b sticky top-0 z-20 shadow-sm">
-        <button onclick="showTab('cobrar')" class="tab-btn flex-1 py-4 text-xs font-bold border-b-2 border-indigo-600 text-indigo-600">CUENTAS POR COBRAR</button>
-        <button onclick="showTab('pagar')" class="tab-btn flex-1 py-4 text-xs font-bold text-gray-400">CUENTAS POR PAGAR</button>
-        <button onclick="showTab('sistema')" class="tab-btn flex-1 py-4 text-xs font-bold text-gray-400">SISTEMA / BACKUP</button>
+    <nav class="flex bg-white border-b sticky top-[24px] z-40 overflow-x-auto no-scrollbar shadow-sm">
+        <button onclick="showTab('cobrar')" class="tab-btn flex-1 py-4 px-6 text-xs font-black border-b-4 border-indigo-600 text-indigo-600 whitespace-nowrap">POR COBRAR (CLIENTES)</button>
+        <button onclick="showTab('pagar')" class="tab-btn flex-1 py-4 px-6 text-xs font-black text-gray-400 border-b-4 border-transparent whitespace-nowrap">POR PAGAR (PROVEEDORES)</button>
+        <button onclick="showTab('balance')" class="tab-btn flex-1 py-4 px-6 text-xs font-black text-gray-400 border-b-4 border-transparent whitespace-nowrap">INFORMES / QUINCENA</button>
+        <button onclick="showTab('config')" class="tab-btn flex-1 py-4 px-6 text-xs font-black text-gray-400 border-b-4 border-transparent whitespace-nowrap">SISTEMA</button>
     </nav>
 
-    <main class="p-4 max-w-5xl mx-auto">
+    <main class="p-4 max-w-6xl mx-auto">
 
         <section id="cobrar" class="tab-content active">
-            <div class="bg-white p-6 rounded-xl shadow-sm mb-6 border border-gray-200">
-                <h2 class="text-sm font-bold mb-4 text-gray-800 uppercase">Seleccione Categoría de Joya:</h2>
-                
-                <div class="grid grid-cols-3 gap-3 mb-6">
-                    <button onclick="setCat('ORO')" class="btn-categoria oro p-4 rounded-xl text-center font-bold shadow-sm">✨ ORO</button>
-                    <button onclick="setCat('PLATA')" class="btn-categoria plata p-4 rounded-xl text-center font-bold shadow-sm">🥈 PLATA</button>
-                    <button onclick="setCat('RELOJ')" class="btn-categoria reloj p-4 rounded-xl text-center font-bold shadow-sm">⌚ RELOJ</button>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" id="cli_nombre" placeholder="Nombre del Cliente" class="p-3 border rounded-lg w-full">
-                    <input type="number" id="cli_venta" placeholder="Valor de Venta ($)" class="p-3 border rounded-lg w-full">
-                    <input type="number" id="cli_costo" placeholder="Costo de Adquisición ($)" class="p-3 border rounded-lg w-full">
-                    <button onclick="guardarRegistro('CLIENTE')" id="btn-main" class="md:col-span-2 bg-indigo-600 text-white font-bold py-3 rounded-lg shadow-md">GUARDAR EN CUENTAS POR COBRAR</button>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border mb-6">
+                <h2 class="text-sm font-black text-indigo-800 mb-4 uppercase flex items-center gap-2">
+                    <span>📝 REGISTRO DE VENTAS</span>
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <input type="text" id="cli_nombre" placeholder="Nombre del Cliente" class="p-3 bg-gray-50 border rounded-xl outline-none focus:ring-2 focus:ring-indigo-400">
+                    <input type="text" id="cli_producto" placeholder="Producto (Joyas)" class="p-3 bg-gray-50 border rounded-xl outline-none">
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="number" id="cli_costo" placeholder="Costo ($)" class="p-3 bg-gray-50 border rounded-xl">
+                        <input type="number" id="cli_venta" placeholder="Venta ($)" class="p-3 bg-gray-50 border rounded-xl">
+                    </div>
+                    <input type="number" id="cli_cuotas" placeholder="Número de Cuotas" class="p-3 bg-gray-50 border rounded-xl">
+                    <input type="text" id="cli_tel" placeholder="WhatsApp (Ej: 57300...)" class="p-3 bg-gray-50 border rounded-xl">
+                    <button onclick="guardarRegistro('CLIENTE')" id="btn-save-cli" class="bg-indigo-600 text-white font-black py-3 rounded-xl shadow-lg shadow-indigo-200">GUARDAR CLIENTE</button>
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-sm overflow-hidden border">
-                <table class="w-full text-left text-xs">
-                    <thead class="bg-gray-50 text-gray-500 uppercase">
-                        <tr>
-                            <th class="p-4">Cata.</th>
-                            <th class="p-4">Cliente</th>
-                            <th class="p-4">Saldo</th>
-                            <th class="p-4 text-center">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="listaCobrar"></tbody>
-                </table>
+            <div class="bg-white rounded-2xl shadow-sm border overflow-hidden">
+                <div class="p-4 bg-gray-50 border-b flex justify-between items-center">
+                    <span class="text-xs font-black text-gray-500 uppercase">Cartera de Clientes</span>
+                    <button onclick="window.print()" class="text-[10px] font-bold bg-white border px-3 py-1 rounded-lg shadow-sm">🖨️ IMPRIMIR LISTA</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-gray-50 text-gray-400 font-bold uppercase">
+                            <tr>
+                                <th class="p-4">Cliente</th>
+                                <th class="p-4">Cuotas</th>
+                                <th class="p-4">Saldo</th>
+                                <th class="p-4 text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listaCobrar" class="divide-y divide-gray-100"></tbody>
+                    </table>
+                </div>
             </div>
         </section>
 
         <section id="pagar" class="tab-content">
-            <div class="bg-red-50 p-6 rounded-xl shadow-sm mb-6 border border-red-100">
-                <h2 class="text-sm font-bold mb-4 text-red-800 uppercase">Registro de Deudas a Proveedores</h2>
+            <div class="bg-red-50 p-6 rounded-2xl shadow-sm border border-red-100 mb-6">
+                <h2 class="text-sm font-black text-red-800 mb-4 uppercase">💸 Registro de Deudas</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" id="prov_nombre" placeholder="Nombre del Proveedor" class="p-3 border rounded-lg">
-                    <input type="number" id="prov_deuda" placeholder="Monto que debo pagar ($)" class="p-3 border rounded-lg">
-                    <button onclick="guardarRegistro('PROVEEDOR')" class="md:col-span-2 bg-red-600 text-white font-bold py-3 rounded-lg shadow-md">REGISTRAR CUENTA POR PAGAR</button>
+                    <input type="text" id="prov_nombre" placeholder="Nombre del Proveedor" class="p-3 border border-red-200 rounded-xl">
+                    <input type="number" id="prov_monto" placeholder="Monto a Pagar ($)" class="p-3 border border-red-200 rounded-xl">
+                    <button onclick="guardarRegistro('PROVEEDOR')" class="md:col-span-2 bg-red-600 text-white font-black py-3 rounded-xl shadow-md">REGISTRAR CUENTA POR PAGAR</button>
                 </div>
             </div>
-            <div id="listaPagar" class="space-y-2"></div>
+            <div id="listaPagar" class="space-y-3"></div>
         </section>
 
-        <section id="sistema" class="tab-content">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-white p-6 rounded-xl shadow border">
-                    <h3 class="font-bold mb-4">EXPORTAR DATOS</h3>
-                    <button onclick="exportarExcel()" class="w-full bg-green-600 text-white py-4 rounded-lg font-bold">📊 DESCARGAR EXCEL</button>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow border">
-                    <h3 class="font-bold mb-4">SEGURIDAD (BACKUP)</h3>
-                    <div class="flex flex-col gap-2">
-                        <button onclick="copiarBackup()" class="bg-gray-800 text-white py-2 rounded">COPIAR CÓDIGO BACKUP</button>
-                        <button onclick="restaurarBackup()" class="border-2 border-gray-800 py-2 rounded font-bold">RESTAURAR DATOS</button>
+        <section id="balance" class="tab-content">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border">
+                    <h3 class="text-xs font-black text-gray-400 uppercase mb-4 text-center">Simulador 0.66% Diario</h3>
+                    <div class="space-y-3">
+                        <input type="number" id="sim_monto" placeholder="Capital a simular" class="w-full p-3 bg-gray-50 rounded-xl border">
+                        <input type="number" id="sim_dias" placeholder="Días de plazo" class="w-full p-3 bg-gray-50 rounded-xl border">
+                        <div id="sim_res" class="p-3 bg-indigo-50 text-indigo-700 rounded-xl text-center hidden">
+                            <p class="text-xs font-bold uppercase">Total con interés:</p>
+                            <p id="sim_val" class="text-2xl font-black">$ 0</p>
+                        </div>
+                        <button onclick="simular()" class="w-full bg-indigo-800 text-white font-bold py-3 rounded-xl">CALCULAR</button>
                     </div>
+                </div>
+                <div class="bg-slate-900 p-6 rounded-2xl shadow-xl text-white">
+                    <h3 class="text-xs font-black text-indigo-300 uppercase mb-4">Cierre Quincenal</h3>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex justify-between border-b border-slate-700 pb-2">
+                            <span class="opacity-70">Salario + Recogida</span>
+                            <input type="number" id="q_ingresos" placeholder="$ 0" class="bg-transparent text-right outline-none font-bold text-green-400 w-24">
+                        </div>
+                        <div class="flex justify-between border-b border-slate-700 pb-2">
+                            <span class="opacity-70">Pagos + Gastos</span>
+                            <input type="number" id="q_egresos" placeholder="$ 0" class="bg-transparent text-right outline-none font-bold text-red-400 w-24">
+                        </div>
+                        <div class="flex justify-between pt-2">
+                            <span class="font-black">SALDO FINAL:</span>
+                            <span id="saldo_quincena" class="font-black text-xl text-green-500">$ 0</span>
+                        </div>
+                        <button onclick="cerrarCaja()" class="w-full bg-green-600 text-white font-black py-2 rounded-lg mt-2">CALCULAR BALANCE</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="config" class="tab-content">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white p-6 rounded-2xl shadow border text-center">
+                    <h4 class="text-[10px] font-black uppercase text-gray-400 mb-4">Reportes</h4>
+                    <button onclick="exportarExcel()" class="w-full bg-green-600 text-white font-bold py-3 rounded-xl">📊 EXCEL COMPLETO</button>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow border text-center">
+                    <h4 class="text-[10px] font-black uppercase text-gray-400 mb-4">Seguridad</h4>
+                    <button onclick="copiarBackup()" class="w-full bg-slate-800 text-white font-bold py-3 rounded-xl">💾 COPIAR BACKUP</button>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow border text-center">
+                    <h4 class="text-[10px] font-black uppercase text-gray-400 mb-4">Mantenimiento</h4>
+                    <button onclick="restaurarBackup()" class="w-full border-2 border-slate-800 text-slate-800 font-bold py-3 rounded-xl">🔄 RESTAURAR DATOS</button>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <footer class="fixed bottom-0 w-full bg-white border-t p-4 text-center shadow-lg">
-        <p class="text-[9px] text-gray-400 font-bold uppercase">Software bajo Derechos de Autor a:</p>
-        <p class="text-sm text-indigo-700 font-black italic">VIBRAS POSITIVAS HM © 2026</p>
+    <footer class="fixed bottom-0 w-full bg-white border-t p-5 text-center shadow-2xl">
+        <p class="text-[8px] text-gray-400 font-black uppercase tracking-[0.4em] mb-1">PROPIEDAD INTELECTUAL Y DESARROLLO</p>
+        <p class="text-sm text-indigo-800 font-black italic">VIBRAS POSITIVAS HM © 2026</p>
     </footer>
 
     <script>
-        let db = JSON.parse(localStorage.getItem('joyeria_v4')) || { clientes: [], proveedores: [] };
-        let currentCat = 'ORO';
+        let db = JSON.parse(localStorage.getItem('joyas_master_v5')) || { clientes: [], proveedores: [] };
         let editId = null;
 
+        // --- NAVEGACIÓN ---
         function showTab(id) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('border-indigo-600', 'text-indigo-600'));
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('border-indigo-600', 'text-indigo-600');
+                b.classList.add('text-gray-400', 'border-transparent');
+            });
             document.getElementById(id).classList.add('active');
+            event.currentTarget.classList.remove('text-gray-400', 'border-transparent');
             event.currentTarget.classList.add('border-indigo-600', 'text-indigo-600');
             render();
         }
 
-        function setCat(cat) {
-            currentCat = cat;
-            alert("Categoría seleccionada: " + cat);
-        }
-
+        // --- CRUD CENTRALIZADO ---
         function guardarRegistro(tipo) {
             if (tipo === 'CLIENTE') {
-                const item = {
+                const data = {
                     id: editId || Date.now(),
-                    cat: currentCat,
                     nombre: document.getElementById('cli_nombre').value,
-                    venta: parseFloat(document.getElementById('cli_venta').value) || 0,
+                    producto: document.getElementById('cli_producto').value,
                     costo: parseFloat(document.getElementById('cli_costo').value) || 0,
+                    venta: parseFloat(document.getElementById('cli_venta').value) || 0,
+                    cuotas: document.getElementById('cli_cuotas').value,
+                    tel: document.getElementById('cli_tel').value,
+                    saldo: parseFloat(document.getElementById('cli_venta').value) || 0,
                     ganancia: (parseFloat(document.getElementById('cli_venta').value) || 0) - (parseFloat(document.getElementById('cli_costo').value) || 0)
                 };
-                if(editId) db.clientes = db.clientes.map(c => c.id === editId ? item : c);
-                else db.clientes.push(item);
+                if(editId) db.clientes = db.clientes.map(c => c.id === editId ? data : c);
+                else db.clientes.push(data);
+                editId = null;
+                document.getElementById('btn-save-cli').innerText = "GUARDAR CLIENTE";
             } else {
                 db.proveedores.push({
                     id: Date.now(),
                     nombre: document.getElementById('prov_nombre').value,
-                    deuda: parseFloat(document.getElementById('prov_deuda').value) || 0
+                    monto: parseFloat(document.getElementById('prov_monto').value) || 0
                 });
             }
-            editId = null;
-            document.getElementById('btn-main').innerText = "GUARDAR EN CUENTAS POR COBRAR";
             save();
+            limpiarInputs();
         }
 
         function render() {
-            // Render Clientes (Cobrar)
+            // Clientes
             const tCobrar = document.getElementById('listaCobrar');
             tCobrar.innerHTML = '';
             db.clientes.forEach(c => {
                 tCobrar.innerHTML += `
-                <tr class="border-b">
-                    <td class="p-4 font-bold text-[10px]">${c.cat}</td>
-                    <td class="p-4 font-bold">${c.nombre}</td>
-                    <td class="p-4 text-green-600 font-bold">$${c.venta.toLocaleString()}</td>
-                    <td class="p-4 text-center">
-                        <button onclick="editar(${c.id})" class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-[10px] font-bold">EDITAR</button>
-                        <button onclick="borrar(${c.id}, 'CLI')" class="text-red-500 font-bold ml-2">X</button>
-                    </td>
-                </tr>`;
+                    <tr>
+                        <td class="p-4 font-black text-indigo-900">${c.nombre}<br><span class="text-[9px] text-gray-400 uppercase font-normal">${c.producto}</span></td>
+                        <td class="p-4 font-bold text-gray-600">${c.cuotas}</td>
+                        <td class="p-4 font-black text-green-600">$${c.saldo.toLocaleString()}</td>
+                        <td class="p-4 text-center flex justify-center gap-2">
+                            <button onclick="editarCli(${c.id})" class="bg-indigo-50 text-indigo-600 p-2 rounded-lg font-bold">✎</button>
+                            <button onclick="ws(${c.tel})" class="bg-green-50 text-green-600 p-2 rounded-lg font-bold">📲</button>
+                            <button onclick="borrar(${c.id}, 'CLI')" class="bg-red-50 text-red-400 p-2 rounded-lg font-bold">X</button>
+                        </td>
+                    </tr>`;
             });
 
-            // Render Proveedores (Pagar)
-            const tPagar = document.getElementById('listaPagar');
-            tPagar.innerHTML = '';
+            // Proveedores
+            const dPagar = document.getElementById('listaPagar');
+            dPagar.innerHTML = '';
             db.proveedores.forEach(p => {
-                tPagar.innerHTML += `
-                <div class="bg-white p-4 rounded-lg shadow-sm border border-red-100 flex justify-between items-center">
-                    <div><p class="text-[10px] text-gray-400 font-bold uppercase">PROVEEDOR</p><p class="font-bold">${p.nombre}</p></div>
-                    <div class="text-right">
-                        <p class="text-red-600 font-black">$${p.deuda.toLocaleString()}</p>
-                        <button onclick="borrar(${p.id}, 'PROV')" class="text-[10px] text-gray-300 font-bold uppercase">Eliminar</button>
-                    </div>
-                </div>`;
+                dPagar.innerHTML += `
+                    <div class="bg-white p-4 rounded-xl border border-red-100 flex justify-between items-center shadow-sm">
+                        <div><p class="text-[9px] text-gray-400 font-bold">PROVEEDOR</p><p class="font-black text-red-800">${p.nombre}</p></div>
+                        <div class="text-right">
+                            <p class="font-black text-red-600">$${p.monto.toLocaleString()}</p>
+                            <button onclick="borrar(${p.id}, 'PROV')" class="text-[9px] font-bold text-red-300 uppercase">Eliminar</button>
+                        </div>
+                    </div>`;
             });
         }
 
-        function editar(id) {
+        // --- FUNCIONES EXTRA (WhatsApp, Simulador, Excel) ---
+        function ws(tel) { if(tel) window.open(`https://wa.me/${tel}?text=Hola, te escribo de la Joyería para recordarte tu pago.`); }
+        
+        function simular() {
+            const m = parseFloat(document.getElementById('sim_monto').value);
+            const d = parseFloat(document.getElementById('sim_dias').value);
+            if(m && d) {
+                const total = m + (m * (0.0066 * d));
+                document.getElementById('sim_val').innerText = `$ ${total.toLocaleString()}`;
+                document.getElementById('sim_res').classList.remove('hidden');
+            }
+        }
+
+        function cerrarCaja() {
+            const ing = parseFloat(document.getElementById('q_ingresos').value) || 0;
+            const egr = parseFloat(document.getElementById('q_egresos').value) || 0;
+            document.getElementById('saldo_quincena').innerText = `$ ${(ing - egr).toLocaleString()}`;
+        }
+
+        function exportarExcel() {
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(db.clientes), "CLIENTES");
+            XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(db.proveedores), "PROVEEDORES");
+            XLSX.writeFile(wb, "Balance_Joyeria_HM.xlsx");
+        }
+
+        function editarCli(id) {
             const c = db.clientes.find(i => i.id === id);
             document.getElementById('cli_nombre').value = c.nombre;
-            document.getElementById('cli_venta').value = c.venta;
+            document.getElementById('cli_producto').value = c.producto;
             document.getElementById('cli_costo').value = c.costo;
-            currentCat = c.cat;
+            document.getElementById('cli_venta').value = c.venta;
+            document.getElementById('cli_cuotas').value = c.cuotas;
+            document.getElementById('cli_tel').value = c.tel;
             editId = id;
-            document.getElementById('btn-main').innerText = "ACTUALIZAR DATOS";
+            document.getElementById('btn-save-cli').innerText = "ACTUALIZAR REGISTRO";
+            showTab('cobrar');
+        }
+
+        function copiarBackup() {
+            navigator.clipboard.writeText(btoa(JSON.stringify(db)));
+            alert("Backup copiado. Pégalo en un chat o bloc de notas.");
+        }
+
+        function restaurarBackup() {
+            const code = prompt("Pega el código de Backup:");
+            if(code) { db = JSON.parse(atob(code)); save(); }
         }
 
         function borrar(id, tipo) {
-            if(confirm("¿Seguro que desea eliminar?")) {
+            if(confirm("¿Eliminar?")) {
                 if(tipo === 'CLI') db.clientes = db.clientes.filter(i => i.id !== id);
                 else db.proveedores = db.proveedores.filter(i => i.id !== id);
                 save();
             }
         }
 
-        function save() {
-            localStorage.setItem('joyeria_v4', JSON.stringify(db));
-            render();
-            document.querySelectorAll('input').forEach(i => i.value = '');
-        }
-
-        function exportarExcel() {
-            const ws_c = XLSX.utils.json_to_sheet(db.clientes);
-            const ws_p = XLSX.utils.json_to_sheet(db.proveedores);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws_c, "Clientes_Por_Cobrar");
-            XLSX.utils.book_append_sheet(wb, ws_p, "Proveedores_Por_Pagar");
-            XLSX.writeFile(wb, "Cartera_Joyeria_HM.xlsx");
-        }
-
-        function copiarBackup() {
-            const code = btoa(JSON.stringify(db));
-            navigator.clipboard.writeText(code);
-            alert("Código de Backup copiado.");
-        }
-
-        function restaurarBackup() {
-            const code = prompt("Pegue el código de Backup:");
-            if(code) {
-                db = JSON.parse(atob(code));
-                save();
-            }
-        }
+        function save() { localStorage.setItem('joyas_master_v5', JSON.stringify(db)); render(); }
+        function limpiarInputs() { document.querySelectorAll('input').forEach(i => i.value = ''); }
 
         render();
     </script>
